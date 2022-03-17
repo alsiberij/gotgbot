@@ -1,4 +1,4 @@
-module gobottg
+module gotgbot
 
 go 1.17
 
