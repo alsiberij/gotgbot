@@ -35,15 +35,17 @@ func GetUpdates(sinceUpdateId int64) (Updates, error) {
 	rq.Header.SetMethod("POST")
 
 	if sinceUpdateId != 0 {
-		rq.PostArgs().Add("offse1t", strconv.FormatInt(sinceUpdateId, 10))
+		rq.PostArgs().Add("offset", strconv.FormatInt(sinceUpdateId, 10))
 	}
+
+	rq.PostArgs().Add("timeout", "25")
 
 	err := ApiClient.Do(rq, rs)
 	if err != nil {
 		return updates, err
 	}
 
-	f, _ := os.Create("tg/log" + time.Now().Format("2006-01-02---15-04") + ".json")
+	f, _ := os.Create("tg/logs/getUpdates-log" + time.Now().Format("2006-01-02---15-04") + ".json")
 	_, _ = f.Write(rs.Body())
 	_ = f.Close()
 

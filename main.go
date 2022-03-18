@@ -3,35 +3,32 @@ package main
 import (
 	"gotgbot/tg"
 	"log"
+	"time"
 )
 
 func main() {
-	u, err := tg.GetUpdates(0)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if !u.Ok {
-		log.Fatal(*u.Description, ": ", *u.ErrorCode)
-	}
+	updateId := int64(0)
 
-	for i := range *u.Result {
-		msg := (*u.Result)[i].Message
-		if msg != nil {
-			log.Printf("Новое сообщение от %s: %s\n",
-				msg.From.FirstName,
-				msg.Text)
-
-			continue
+	for {
+		log.Println(time.Now().Unix())
+		u, err := tg.GetUpdates(updateId)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if !u.Ok {
+			log.Fatal(*u.Description, ": ", *u.ErrorCode)
 		}
 
-		mcm := (*u.Result)[i].MyChatMember
-		if mcm != nil {
-			if mcm.NewChatMember.Status == "kicked" {
-				log.Printf("%s вышел", mcm.NewChatMember.User.FirstName)
+		if len(*u.Result) != 0 {
+			for i := range *u.Result {
+				//...
+				update := (*u.Result)[i]
+				log.Println(updateId, " Message: ", update.Message, "; MyChatMember: ", update.MyChatMember)
+
+				updateId = update.Id + 1
 			}
-			if mcm.NewChatMember.Status == "member" {
-				log.Printf("%s вошел", mcm.NewChatMember.User.FirstName)
-			}
+		} else {
+			log.Println("Updates is nil")
 		}
 	}
 }
