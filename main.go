@@ -21,11 +21,12 @@ func main() {
 
 		if len(*u.Result) != 0 {
 			for i := range *u.Result {
-				//...
 				update := (*u.Result)[i]
-				log.Println(updateId, " Message: ", update.Message, "; MyChatMember: ", update.MyChatMember)
-
 				updateId = update.Id + 1
+
+				if update.Message != nil {
+					tg.HandleMessage(update.Message)
+				}
 			}
 		} else {
 			log.Println("Updates is nil")

@@ -38,7 +38,7 @@ func GetUpdates(sinceUpdateId int64) (Updates, error) {
 		rq.PostArgs().Add("offset", strconv.FormatInt(sinceUpdateId, 10))
 	}
 
-	rq.PostArgs().Add("timeout", "25")
+	rq.PostArgs().Add("timeout", "60")
 
 	err := ApiClient.Do(rq, rs)
 	if err != nil {

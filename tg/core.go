@@ -6,6 +6,7 @@ import (
 )
 
 const (
+	BotName   = "alsiberijbot"
 	ApiScheme = "https"
 	ApiHost   = "api.telegram.org"
 )
@@ -14,7 +15,7 @@ var (
 	//go:embed token.txt
 	Token string
 
-	DefaultUri = ApiScheme + "://" + ApiHost + "/bot" + Token + "/"
+	DefaultUri = ApiScheme + "://" + ApiHost + "/bot" + Token
 
-	ApiClient = fasthttp.HostClient{Addr: ApiHost, IsTLS: true}
+	ApiClient = &fasthttp.HostClient{Addr: ApiHost, IsTLS: true}
 )
